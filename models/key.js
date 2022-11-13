@@ -4,7 +4,7 @@ module.exports = class Key extends Sequelize.Model{
     static init(sequelize){
         return super.init({
             key: {                          //game data key
-                type: Sequelize.STRING(10),
+                type: Sequelize.STRING(20),
                 allowNull: false,
             },
             photoURL1:{                     //photo
