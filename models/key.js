@@ -3,11 +3,11 @@ const Sequelize = require('sequelize');
 module.exports = class Key extends Sequelize.Model{
     static init(sequelize){
         return super.init({
-            key: {
-                type: Sequelize.STRING(10),
+            key: {                          //game data key
+                type: Sequelize.STRING(20),
                 allowNull: false,
             },
-            photoURL1:{
+            photoURL1:{                     //photo
                 type: Sequelize.STRING,
                 allowNull: true,
             },
@@ -23,11 +23,11 @@ module.exports = class Key extends Sequelize.Model{
                 type: Sequelize.STRING,
                 allowNull: true,
             },
-            winlose:{
+            winlose:{                       //win or lose
                 type: Sequelize.BOOLEAN,
                 allowNull: true,
             },
-            userid:{
+            userid:{                        //data for certain user id
                 type: Sequelize.STRING(20),
                 allowNull: true,
             },

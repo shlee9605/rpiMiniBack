@@ -1,16 +1,16 @@
 const express = require('express');
 
-const passport = require('passport');
+const passport = require('passport');       //for login
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');           //for hash
 
-const {isLoggedIn, isNotLoggedIn} = require('./middlewares');
+const {isLoggedIn, isNotLoggedIn} = require('./middlewares');   //login middleware
 
-const User=require('../models/user');
+const User=require('../models/user');       //get User SQL Table
 
-const router = express.Router();
+const router = express.Router();            //use router
 
-router.post('/login', isNotLoggedIn, (req, res, next)=>{
+router.post('/login', isNotLoggedIn, (req, res, next)=>{        //user login
     passport.authenticate('local', (authError, user, info)=>{
         if(authError){
             console.error(authError);
