@@ -11,27 +11,27 @@ const User=require('../models/user');       //get User SQL Table
 const router = express.Router();            //use router
 
 router.post('/login', isNotLoggedIn, (req, res, next)=>{        //user login
-    passport.authenticate('local', (authError, user, info)=>{
-        if(authError){
+    passport.authenticate('local', (authError, user, info)=>{   //via passport to localstrategy
+        if(authError){                          //localstrategy error
             console.error(authError);
             return next(authError);
         }
-        if(!user){
+        if(!user){                              //password not matched
             return res.redirect(`/?loginError=${info.message}`);
         }
-        return req.login(user, (loginError)=>{
-            if(loginError){
+        return req.login(user, (loginError)=>{  
+            if(loginError){                     //passport deserializer error
                 console.error(loginError);
                 return next(loginError);
             }
-            return res.redirect('/');
+            return res.redirect('/');           //if no error, redirect to home
         });
     })(req, res, next);
 });
 
-router.get('/logout', isLoggedIn, (req, res)=>{
+router.get('/logout', isLoggedIn, (req, res)=>{ //user logout
     req.logout()
-    req.session.destroy();
+    req.session.destroy();          //distroy cookie session
     res.redirect('/');
 });
 

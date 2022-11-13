@@ -20,10 +20,10 @@ const profileRouter = require('./routes/profile')
 
 dotenv.config();
 
-const app = express();
-app.set('port', process.env.PORT);
+const app = express();    
+app.set('port', process.env.PORT);    //setting connect port
 
-sequelize.sync({force: false})
+sequelize.sync({force: false})        //Sequelize DB
     .then(()=>{
         console.log('데이터베이스 연결 성공');
     })
@@ -52,7 +52,7 @@ app.use(session({     //express session use req.session
     name: 'session-cookie',
   }));
 
-  app.use(passport.initialize());
+  app.use(passport.initialize());   //using passport
   app.use(passport.session());
 
   app.use('/', indexRouter);

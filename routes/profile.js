@@ -5,14 +5,14 @@ const fs = require('fs');
 
 const router = express.Router();
 
-try{
-    fs.readdirSync('uploads');
+try{                            //make upload folder for pic data
+    fs.readdirSync('uploads');  //using filesystem lib
 } catch(error){
     console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
     fs.mkdirSync('uploads');
 }
 
-const upload = multer({
+const upload = multer({             //using multer
     storage: multer.diskStorage({
         destination(req, file, cb){
             cb(null, 'uploads/');
@@ -25,10 +25,10 @@ const upload = multer({
     limits: {fileSisze: 5 * 1024 * 1024},
 });
 
-const { Key } = require('../models');
+const { Key } = require('../models');   //key DB
 
 router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and save from raspi
-    const{key, winlose, userid} = req.body;
+    const{key, winlose, userid} = req.body; //CREATE KEY SQL
     const photoURL1=req.files[0].filename;
     const photoURL2=req.files[1].filename;
     const photoURL3=req.files[2].filename;
@@ -53,7 +53,7 @@ router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and
 
 router.get('/read/id', async(req, res, next)=>{     //for photo
     try{                                        
-        const keys = await Key.findAll({ 
+        const keys = await Key.findAll({        //READ BY ID FROM KEY SQL
             where:{
                 userid: req.body.userid
             }
@@ -68,7 +68,7 @@ router.get('/read/id', async(req, res, next)=>{     //for photo
 
 router.get('/read', async(req, res, next)=>{    //read all
     try{                                       
-        const keys = await Key.findAll({   
+        const keys = await Key.findAll({        //READ ALL KEY SQL
         })
         return res.status(201).json({
             keys
@@ -80,7 +80,7 @@ router.get('/read', async(req, res, next)=>{    //read all
 
 router.patch('/patch', async(req, res, next)=>{ //update profile by key value
     try{                                        
-        await Key.update({                      
+        await Key.update({                      //UPDATE KEY SQL  
             userid: req.body.userid             
         }, {where: {key: req.body.key}})        
         return res.sendStatus(201);             
