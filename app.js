@@ -12,6 +12,9 @@ const morgan = require('morgan');               //morgan
 const session = require('express-session');     //express session
 const dotenv = require('dotenv');
 
+const cors = require('cors');                   //cors
+const corsConfig = require('./config/corsConfig');
+
 const {sequelize} = require('./models');
 
 const indexRouter = require('./routes')
@@ -22,6 +25,8 @@ dotenv.config();
 
 const app = express();    
 app.set('port', process.env.PORT);    //setting connect port
+
+app.use(cors(corsConfig)); // cors설정
 
 sequelize.sync({force: false})        //Sequelize DB
     .then(()=>{
