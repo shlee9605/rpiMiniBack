@@ -3,6 +3,8 @@ const multer = require('multer');
 const path = require('path');
 const {isLoggedIn} = require('./middlewares');   //login middleware
 const fs = require('fs');
+const { verifyToken } = require('./middlewares')
+
 
 const router = express.Router();
 
@@ -16,11 +18,14 @@ try{                            //make upload folder for pic data
 const upload = multer({             //using multer
     storage: multer.diskStorage({
         destination(req, file, cb){
+            console.log("upload",1)
             cb(null, 'uploads/');
         },
         filename(req, file, cb){
+            console.log("upload",2)
             const ext = path.extname(file.originalname);
-            cb(null, path.basename(file.originalname, ext)+Date.now()+ext);
+            console.log(ext);
+            cb(null, path.basename(file.originalname, ext)+Date.now() + ext);
         },
     }),
     limits: {fileSisze: 5 * 1024 * 1024},
@@ -28,35 +33,56 @@ const upload = multer({             //using multer
 
 const { Key } = require('../models');   //key DB
 
+// test용 가라 api
+// router.post('/test', async (req, res, next)=> {
+//     console.log(1)
+//     try {
+//         console.log(2)
+//         return res.status(200).json({
+//             message: "good",
+//         });
+//     } catch (error) {
+//         console.log(3)
+//         return res.sendStatus(500);
+//     }
+// })
+
+
 router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and save from raspi
-    const{key, winlose, userid} = req.body; //CREATE KEY SQL
+    console.log(1)
+    console.log("req.files :", req.files);
+    // console.log("headers : ", headers)
+    console.log(2)
+    const{key, winlose, userid} = req.body;
     const photoURL1=req.files[0].filename;
-    const photoURL2=req.files[1].filename;
-    const photoURL3=req.files[2].filename;
-    const photoURL4=req.files[3].filename;
-    console.log(req.body);
+    // const photoURL2=req.files[1].filename;
+    // const photoURL3=req.files[2].filename;
+    // const photoURL4=req.files[3].filename;   
     try{
+        console.log(3)
         await Key.create({
             key,
             photoURL1,
-            photoURL2,
-            photoURL3,
-            photoURL4,
+            // photoURL2,
+            // photoURL3,
+            // photoURL4,
             winlose,
             userid,
         });
+        console.log(4)
         return res.sendStatus(201);
     } catch(error){
+        console.log(5)
         console.error(error);
         return next(error);
     }
 });
 
-router.get('/read/:userid', isLoggedIn, async(req, res, next)=>{     //for photo
+router.get('/read', verifyToken, async(req, res, next)=>{     //for photo
     try{                                        
         const keys = await Key.findAll({        //READ BY ID FROM KEY SQL
             where:{
-                userid: req.params.userid
+                userid: req.decoded.id
             }
         })
         return res.status(201).json({
@@ -67,7 +93,7 @@ router.get('/read/:userid', isLoggedIn, async(req, res, next)=>{     //for photo
     }
 });
 
-router.get('/read', isLoggedIn, async(req, res, next)=>{    //read all
+router.get('/read', verifyToken, async(req, res, next)=>{    //read all
     try{                                       
         const keys = await Key.findAll({        //READ ALL KEY SQL
         })
@@ -79,7 +105,7 @@ router.get('/read', isLoggedIn, async(req, res, next)=>{    //read all
     }
 });
 
-router.patch('/patch', isLoggedIn, async(req, res, next)=>{ //update profile by key value
+router.patch('/patch', verifyToken, async(req, res, next)=>{ //update profile by key value
     try{                                        
         await Key.update({                      //UPDATE KEY SQL  
             userid: req.body.userid             
