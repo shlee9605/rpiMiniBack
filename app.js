@@ -23,7 +23,8 @@ const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const profileRouter = require('./routes/profile')
 
-passportConfig(); // 패스포트 설정
+
+// passportConfig(); // 패스포트 설정
 
 dotenv.config();
 
@@ -61,8 +62,8 @@ app.use(session({     //express session use req.session
     name: 'session-cookie',
   }));
 
-  app.use(passport.initialize());   //using passport
-  app.use(passport.session());
+  // app.use(passport.initialize());   //using passport
+  // app.use(passport.session());
 
   app.use('/', indexRouter);
   app.use('/auth', authRouter);

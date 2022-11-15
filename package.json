@@ -2,12 +2,13 @@
   "name": "raspi-back",
   "version": "0.0.1",
   "scripts": {
-    "dev": "nodemon app"
+    "start": "nodemon app"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.5.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.5",
