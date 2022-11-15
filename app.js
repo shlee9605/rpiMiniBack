@@ -12,6 +12,8 @@ const morgan = require('morgan');               //morgan
 const session = require('express-session');     //express session
 const dotenv = require('dotenv');
 
+const passportConfig = require('./passport');
+
 const cors = require('cors');                   //cors
 const corsConfig = require('./config/corsConfig');
 
@@ -20,6 +22,8 @@ const {sequelize} = require('./models');
 const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const profileRouter = require('./routes/profile')
+
+passportConfig(); // 패스포트 설정
 
 dotenv.config();
 

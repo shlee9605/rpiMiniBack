@@ -2,7 +2,7 @@
   "name": "raspi-back",
   "version": "0.0.1",
   "scripts": {
-    "start": "nodemon app"
+    "dev": "nodemon app"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"

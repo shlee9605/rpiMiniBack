@@ -24,9 +24,11 @@ router.post('/login', isNotLoggedIn, (req, res, next)=>{        //user login
                 console.error(loginError);
                 return next(loginError);
             }
-            return res.redirect('/');           //if no error, redirect to home
+            return res.sendStatus(200);
+            // return res.redirect('/');           //if no error, redirect to home
         });
     })(req, res, next);
+    
 });
 
 router.get('/logout', isLoggedIn, (req, res)=>{ //user logout
