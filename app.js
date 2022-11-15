@@ -23,11 +23,12 @@ const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const profileRouter = require('./routes/profile')
 
-passportConfig(); // 패스포트 설정
+
 
 dotenv.config();
 
 const app = express();    
+passportConfig(); // 패스포트 설정
 app.set('port', process.env.PORT);    //setting connect port
 
 app.use(cors(corsConfig)); // cors설정
