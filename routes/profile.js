@@ -15,11 +15,14 @@ try{
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, cb){
+            console.log("upload",1)
             cb(null, 'uploads/');
         },
         filename(req, file, cb){
+            console.log("upload",2)
             const ext = path.extname(file.originalname);
-            cb(null, path.basename(file.originalname, ext)+Date.now()+ext);
+            console.log(ext);
+            cb(null, path.basename(file.originalname, ext)+Date.now() + ext);
         },
     }),
     limits: {fileSisze: 5 * 1024 * 1024},
@@ -27,25 +30,46 @@ const upload = multer({
 
 const { Key } = require('../models');
 
+// test용 가라 api
+// router.post('/test', async (req, res, next)=> {
+//     console.log(1)
+//     try {
+//         console.log(2)
+//         return res.status(200).json({
+//             message: "good",
+//         });
+//     } catch (error) {
+//         console.log(3)
+//         return res.sendStatus(500);
+//     }
+// })
+
+
 router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and save from raspi
+    console.log(1)
+    console.log("req.files :", req.files);
+    // console.log("headers : ", headers)
+    console.log(2)
     const{key, winlose, userid} = req.body;
     const photoURL1=req.files[0].filename;
-    const photoURL2=req.files[1].filename;
-    const photoURL3=req.files[2].filename;
-    const photoURL4=req.files[3].filename;
-    console.log(req.body);
+    // const photoURL2=req.files[1].filename;
+    // const photoURL3=req.files[2].filename;
+    // const photoURL4=req.files[3].filename;   
     try{
+        console.log(3)
         await Key.create({
             key,
             photoURL1,
-            photoURL2,
-            photoURL3,
-            photoURL4,
+            // photoURL2,
+            // photoURL3,
+            // photoURL4,
             winlose,
             userid,
         });
+        console.log(4)
         return res.sendStatus(201);
     } catch(error){
+        console.log(5)
         console.error(error);
         return next(error);
     }
