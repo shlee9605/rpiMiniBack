@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { verifyToken } = require('./middlewares')
+
 
 const router = express.Router();
 
@@ -75,11 +77,11 @@ router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and
     }
 });
 
-router.get('/read/:userid', isLoggedIn, async(req, res, next)=>{     //for photo
+router.get('/read', verifyToken, async(req, res, next)=>{     //for photo
     try{                                        
         const keys = await Key.findAll({        //READ BY ID FROM KEY SQL
             where:{
-                userid: req.params.userid
+                userid: req.decoded.id
             }
         })
         return res.status(201).json({
@@ -90,7 +92,7 @@ router.get('/read/:userid', isLoggedIn, async(req, res, next)=>{     //for photo
     }
 });
 
-router.get('/read', isLoggedIn, async(req, res, next)=>{    //read all
+router.get('/read', verifyToken, async(req, res, next)=>{    //read all
     try{                                       
         const keys = await Key.findAll({        //READ ALL KEY SQL
         })
@@ -102,7 +104,7 @@ router.get('/read', isLoggedIn, async(req, res, next)=>{    //read all
     }
 });
 
-router.patch('/patch', isLoggedIn, async(req, res, next)=>{ //update profile by key value
+router.patch('/patch', verifyToken, async(req, res, next)=>{ //update profile by key value
     try{                                        
         await Key.update({                      //UPDATE KEY SQL  
             userid: req.body.userid             
