@@ -1,4 +1,4 @@
-exports.isLoggedIn=(req, res, next)=>{
+exports.isLoggedIn=(req, res, next)=>{          //logged in status
     if(req.isAuthenticated()){
         next();
     } else {
@@ -6,7 +6,7 @@ exports.isLoggedIn=(req, res, next)=>{
     }
 };
 
-exports.isNotLoggedIn = (req, res, next) => {
+exports.isNotLoggedIn = (req, res, next) => {   //logged out status
     if(!req.isAuthenticated()){
         next();
     } else {
