@@ -51,11 +51,11 @@ router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and
     }
 });
 
-router.get('/read/id', async(req, res, next)=>{     //for photo
+router.get('/read/:userid', isLoggedIn, async(req, res, next)=>{     //for photo
     try{                                        
         const keys = await Key.findAll({        //READ BY ID FROM KEY SQL
             where:{
-                userid: req.body.userid
+                userid: req.params.userid
             }
         })
         return res.status(201).json({
@@ -66,7 +66,7 @@ router.get('/read/id', async(req, res, next)=>{     //for photo
     }
 });
 
-router.get('/read', async(req, res, next)=>{    //read all
+router.get('/read', isLoggedIn, async(req, res, next)=>{    //read all
     try{                                       
         const keys = await Key.findAll({        //READ ALL KEY SQL
         })
@@ -78,7 +78,7 @@ router.get('/read', async(req, res, next)=>{    //read all
     }
 });
 
-router.patch('/patch', async(req, res, next)=>{ //update profile by key value
+router.patch('/patch', isLoggedIn, async(req, res, next)=>{ //update profile by key value
     try{                                        
         await Key.update({                      //UPDATE KEY SQL  
             userid: req.body.userid             
