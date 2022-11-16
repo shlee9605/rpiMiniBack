@@ -86,7 +86,7 @@ router.get('/read/all', verifyToken, async(req, res, next)=>{    //read all
 });
 
 router.patch('/patch', verifyToken, async(req, res, next)=>{ //update profile by key value
-    try{                                        
+    try{    
         await Key.update({                      //UPDATE KEY SQL  
             userid: req.body.userid             
         }, {where: {key: req.body.key}})        
