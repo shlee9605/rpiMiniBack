@@ -4,8 +4,6 @@ const passport = require('passport');       //for login
 
 const bcrypt = require('bcrypt');           //for hash
 
-const jwt = require('jsonwebtoken');
-
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares');   //login middleware
 
 const User=require('../models/user');       //get User SQL Table
@@ -14,7 +12,7 @@ const e = require('express');
 const router = express.Router();            //use router
 
 
-// 로컬 로그인 api
+// Local Login api
 router.post('/login', async (req, res) => {
     const { userid, password } = req.body;
     console.log(userid, password);
