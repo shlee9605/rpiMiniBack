@@ -42,6 +42,8 @@ sequelize.sync({force: false})        //Sequelize DB
 
 app.use(morgan('dev'));     //morgan get time
 
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/', express.static(path.join(__dirname, 'public')));   //static using public folder
 
 app.use(express.json());                          //body parser  use req.body
