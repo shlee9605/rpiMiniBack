@@ -51,16 +51,16 @@ app.use(express.urlencoded({extended: false}));
 
 app.use(cookieParser(process.env.COOKIE_SECRET))  //cookie parser use req.cookie
 
-app.use(session({     //express session use req.session
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie:{
-      httpOnly: true,
-      secure: false,
-    },
-    name: 'session-cookie',
-  }));
+// app.use(session({     //express session use req.session
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: process.env.COOKIE_SECRET,
+//     cookie:{
+//       httpOnly: true,
+//       secure: false,
+//     },
+//     name: 'session-cookie',
+//   }));
 
   // app.use(passport.initialize());   //using passport
   // app.use(passport.session());

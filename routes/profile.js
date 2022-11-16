@@ -47,13 +47,19 @@ const { Key } = require('../models');   //key DB
 // })
 
 
-router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and save from raspi
+router.post('/', upload.fields([{name: 'key'}, {name: 'img0'}, {name: 'img1'}, {name: 'img2'}, {name: 'img3'}]), async (req, res, next)=>{ //get pic and save from raspi
     console.log(1)
     console.log("req.files :", req.files);
+    console.log("req.files.img0 :", req.files.img0);
+    console.log("req.files.img0[0] :", req.files.img0[0]);
+    console.log("req.files.img0[0].filename :", req.files.img0[0].filename);
     // console.log("headers : ", headers)
     console.log(2)
     const{key, winlose, userid} = req.body;
-    const photoURL1=req.files[0].filename;
+    const photoURL1=req.files.img0[0].filename;
+    const photoURL2=req.files.img1[0].filename;
+    const photoURL3=req.files.img2[0].filename;
+    const photoURL4=req.files.img3[0].filename;
     // const photoURL2=req.files[1].filename;
     // const photoURL3=req.files[2].filename;
     // const photoURL4=req.files[3].filename;   
@@ -62,11 +68,11 @@ router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and
         await Key.create({
             key,
             photoURL1,
-            // photoURL2,
-            // photoURL3,
-            // photoURL4,
-            winlose,
+            photoURL2,
+            photoURL3,
+            photoURL4,
             userid,
+            winlose,
         });
         console.log(4)
         return res.sendStatus(201);
