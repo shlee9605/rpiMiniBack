@@ -55,17 +55,17 @@ router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and
     console.log(2)
     const{key, winlose, userid} = req.body;
     const photoURL1=req.files[0].filename;
-    // const photoURL2=req.files[1].filename;
-    // const photoURL3=req.files[2].filename;
-    // const photoURL4=req.files[3].filename;   
+    const photoURL2=req.files[1].filename;
+    const photoURL3=req.files[2].filename;
+    const photoURL4=req.files[3].filename;   
     try{
         console.log(3)
         await Key.create({
             key,
             photoURL1,
-            // photoURL2,
-            // photoURL3,
-            // photoURL4,
+            photoURL2,
+            photoURL3,
+            photoURL4,
             winlose,
             userid,
         });
@@ -79,7 +79,7 @@ router.post('/', upload.array('img', 4), async (req, res, next)=>{ //get pic and
 });
 
 router.get('/read', verifyToken, async(req, res, next)=>{     //for photo
-    try{                                        
+    try{          
         const keys = await Key.findAll({        //READ BY ID FROM KEY SQL
             where:{
                 userid: req.decoded.id
@@ -93,7 +93,7 @@ router.get('/read', verifyToken, async(req, res, next)=>{     //for photo
     }
 });
 
-router.get('/read', verifyToken, async(req, res, next)=>{    //read all
+router.get('/read/all', verifyToken, async(req, res, next)=>{    //read all
     try{                                       
         const keys = await Key.findAll({        //READ ALL KEY SQL
         })

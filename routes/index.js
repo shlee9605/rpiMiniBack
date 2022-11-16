@@ -1,5 +1,5 @@
 const express = require('express');
-
+const jwt = require('jsonwebtoken');
 const passport = require('passport');       //for login
 
 const bcrypt = require('bcrypt');           //for hash
@@ -7,12 +7,13 @@ const bcrypt = require('bcrypt');           //for hash
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares');   //login middleware
 
 const User=require('../models/user');       //get User SQL Table
+const e = require('express');
 
 const router = express.Router();            //use router
 
 
 // 로컬 로그인 api
-router.post('/signIn', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { userid, password } = req.body;
     console.log(userid, password);
     // id = id.toLowerCase();
@@ -26,7 +27,7 @@ router.post('/signIn', async (req, res) => {
       const validPassword = await bcrypt.compare(password, validId.password)
       if (validPassword) {
         const token = jwt.sign({
-          id: userid,
+          id:userid,
         }, process.env.JWT_SECRET, {
           expiresIn: '30000m', // 테스트용이여서 일단 길게 했습니다. 
           issuer: 'rpiProject',
