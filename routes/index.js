@@ -13,7 +13,7 @@ const User=require('../models/user');       //get User SQL Table
 const router = express.Router();            //use router
 
 
-router.post('/signIn', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { userid, password } = req.body;
     console.log(userid, password);
     // id = id.toLowerCase();
