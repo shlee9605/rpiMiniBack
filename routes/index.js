@@ -4,6 +4,8 @@ const passport = require('passport');       //for login
 
 const bcrypt = require('bcrypt');           //for hash
 
+const jwt = require('jsonwebtoken');
+
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares');   //login middleware
 
 const User=require('../models/user');       //get User SQL Table
@@ -11,24 +13,23 @@ const User=require('../models/user');       //get User SQL Table
 const router = express.Router();            //use router
 
 
-// 로컬 로그인 api
 router.post('/signIn', async (req, res) => {
     const { userid, password } = req.body;
     console.log(userid, password);
     // id = id.toLowerCase();
     const validId = await User.findOne({ where: { userid } });
     try {
-      // 클라이언트가 입력한 ID의 유효성 체크
+      // id validation check
       if (!validId) {
         return res.sendStatus(404);
       }
-      // 클라이언트가 입력한 pw와 db에 저장된 암호화된 비밀번호를 비교 후 일치하면 값이 담김.
+      // password validation check
       const validPassword = await bcrypt.compare(password, validId.password)
       if (validPassword) {
-        const token = jwt.sign({
+        const token = jwt.sign({        // create jwt for authentication
           id: userid,
         }, process.env.JWT_SECRET, {
-          expiresIn: '30000m', // 테스트용이여서 일단 길게 했습니다. 
+          expiresIn: '30000m',  
           issuer: 'rpiProject',
         });
         res.cookie('token', token, {
@@ -40,7 +41,6 @@ router.post('/signIn', async (req, res) => {
           token,
         });
       } else {
-        // 비밀번호 불일치 400(Bad Request)
         return res.sendStatus(400);
       }
     } catch (error) {
@@ -48,28 +48,6 @@ router.post('/signIn', async (req, res) => {
     }
   })
 
-
-
-// router.post('/login', isNotLoggedIn, (req, res, next)=>{        //user login
-//     passport.authenticate('local', (authError, user, info)=>{   //via passport to localstrategy
-//         if(authError){                          //localstrategy error
-//             console.error(authError);
-//             return next(authError);
-//         }
-//         if(!user){                              //password not matched
-//             return res.redirect(`/?loginError=${info.message}`);
-//         }
-//         return req.login(user, (loginError)=>{  
-//             if(loginError){                     //passport deserializer error
-//                 console.error(loginError);
-//                 return next(loginError);
-//             }
-//             return res.sendStatus(200);
-//             // return res.redirect('/');           //if no error, redirect to home
-//         });
-//     })(req, res, next);
-    
-// });
 
 router.get('/logout', isLoggedIn, (req, res)=>{ //user logout
     req.logout()
