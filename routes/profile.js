@@ -73,7 +73,7 @@ router.get('/read', verifyToken, async(req, res, next)=>{     //for photo
     }
 });
 
-router.get('/read', verifyToken, async(req, res, next)=>{    //read all
+router.get('/read/all', verifyToken, async(req, res, next)=>{    //read all
     try{                                       
         const keys = await Key.findAll({        //READ ALL KEY SQL
         })
